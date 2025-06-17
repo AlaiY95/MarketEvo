@@ -1,0 +1,10 @@
+app/api/
+├── analyze-chart/route.ts    ← Already exists
+├── auth/[...nextauth]/route.ts ← NextAuth 
+├── user/
+│   ├── profile/route.ts      ← /api/user/profile
+│   └── settings/route.ts     ← /api/user/settings
+├── charts/
+│   ├── route.ts             ← /api/charts (list user's charts)
+│   └── [id]/route.ts        ← /api/charts/123 (specific chart)
+└── subscription/route.ts     ← /api/subscription (billing)

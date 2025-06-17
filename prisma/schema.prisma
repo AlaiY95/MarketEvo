@@ -1,0 +1,145 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name        String?  // Real name from registration - rarely changed
+  displayName String?  // Public display name - can be updated in settings
+  password  String
+
+  // Trading-specific fields
+  timezone    String?  @default("Eastern Time (ET)")
+  tradingBio  String?
+
+  // Account fields
+  isPremium Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  supportTickets SupportTicket[]
+
+  // Usage tracking
+  analysesUsed    Int      @default(0)
+  lastResetDate   String   @default("")
+
+  // Trading performance metrics
+  totalTrades     Int      @default(0)
+  winningTrades   Int      @default(0)
+  totalProfit     Float    @default(0.0)
+  totalLoss       Float    @default(0.0)
+  lessonsCompleted Int     @default(0)
+
+  // Stripe fields
+  stripeCustomerId     String? @unique
+  stripeSubscriptionId String? @unique
+  subscriptionStatus   String? // active, canceled, past_due, etc.
+  subscriptionPeriodEnd DateTime?
+
+  // Relations
+  analyses ChartAnalysis[]
+  sessions UserSession[]
+  trades   Trade[]
+
+  @@map("users")
+}
+
+model ChartAnalysis {
+  id          String   @id @default(cuid())
+  userId      String
+
+  // Chart data
+  imageName   String
+  imageSize   Int
+
+  // Analysis results
+  tradingStyle String   // 'swing', 'day', 'scalp'
+  pattern     String?
+  confidence  String?
+  timeframe   String?
+  trend       String?
+  entryPoint  Float?
+  stopLoss    Float?
+  target      Float?
+  riskReward  String?
+  explanation String?
+
+  // Raw data
+  fullAnalysis String  // Complete Claude response
+
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chart_analyses")
+}
+
+model Trade {
+  id          String   @id @default(cuid())
+  userId      String
+  
+  // Trade details
+  symbol      String
+  tradingStyle String  // 'swing', 'day', 'scalp'
+  entryPrice  Float
+  exitPrice   Float?
+  stopLoss    Float?
+  takeProfit  Float?
+  quantity    Int
+  
+  // Trade outcome
+  status      String   @default("open") // 'open', 'closed', 'stopped'
+  isWin       Boolean?
+  profitLoss  Float?
+  
+  // Metadata
+  entryDate   DateTime @default(now())
+  exitDate    DateTime?
+  notes       String?
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analysisId String?  // Optional link to chart analysis
+  
+  @@map("trades")
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  sessionId String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model SupportTicket {
+  id        String   @id @default(cuid())
+  userId    String?  // Optional - for guest users
+  email     String
+  reason    String
+  subject   String
+  message   String
+  status    String   @default("open") // open, in-progress, closed
+  priority  String   @default("normal") // low, normal, high, urgent
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("support_tickets")
+}
