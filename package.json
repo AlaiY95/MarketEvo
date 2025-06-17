@@ -11,7 +11,7 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "prisma db push --force-reset && npm run db:seed",
-    "vercel-build": "prisma generate && prisma db push && next build"
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.53.0",
