@@ -124,7 +124,7 @@ export default function Home() {
                 <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
               </svg>
             </div>
-            <span className="text-white font-bold text-xl">ChartAI</span>
+            <span className="text-white font-bold text-xl">MarketEvo</span>
           </div>
           
           {/* Desktop Navigation */}
@@ -201,7 +201,7 @@ export default function Home() {
         {/* Features Preview */}
         <div id="features" className="mb-20">
           <h2 className="text-4xl font-bold text-center text-white mb-16">
-            Why Traders Choose <span className="text-blue-400">ChartAI</span>
+            Why Traders Choose <span className="text-blue-400">MarketEvo</span>
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -672,7 +672,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="text-center text-gray-400 border-t border-white/10 pt-8">
-          <p>&copy; 2025 ChartAI. All rights reserved. Trade responsibly.</p>
+          <p>&copy; 2025 MarketEvo. All rights reserved. Trade responsibly.</p>
         </footer>
       </div>
 

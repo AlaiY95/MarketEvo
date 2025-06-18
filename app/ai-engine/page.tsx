@@ -15,7 +15,7 @@ export default function ChartDatabasePage() {
                   <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-gray-900">ChartAI</span>
+              <span className="text-xl font-bold text-gray-900">MarketEvo</span>
             </Link>
 
             {/* Navigation */}
@@ -51,7 +51,7 @@ export default function ChartDatabasePage() {
 
           {/* Subtitle */}
           <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-12">
-            Discover how ChartAI's massive chart database of over 10 million analyzed 
+            Discover how MarketEvo's massive chart database of over 10 million analyzed 
             patterns creates the most sophisticated AI trading system ever built.
           </p>
 
@@ -249,7 +249,7 @@ export default function ChartDatabasePage() {
               },
               {
                 icon: "🟢",
-                title: "ChartAI",
+                title: "MarketEvo",
                 subtitle: "Deep learning from millions of patterns with context-aware analysis and proven accuracy.",
                 features: [
                   "10M+ pattern database",

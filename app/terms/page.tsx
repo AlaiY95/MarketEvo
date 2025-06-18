@@ -8,7 +8,7 @@ export default function TermsPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">ChartAI</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">MarketEvo</h1>
             <h2 className="text-2xl font-semibold text-gray-700">Terms and Conditions</h2>
           </div>
 
@@ -18,21 +18,21 @@ export default function TermsPage() {
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">1. Acceptance of Terms</h3>
               <p className="leading-relaxed">
-                By accessing and using ChartAI ("the Service"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Service.
+                By accessing and using MarketEvo ("the Service"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Service.
               </p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">2. Description of Service</h3>
               <p className="leading-relaxed">
-                ChartAI provides AI-powered chart analysis tools for financial markets. The Service uses algorithms to analyze patterns and provide insights on financial charts. All analysis is provided for informational purposes only and should not be construed as financial advice.
+                MarketEvo provides AI-powered chart analysis tools for financial markets. The Service uses algorithms to analyze patterns and provide insights on financial charts. All analysis is provided for informational purposes only and should not be construed as financial advice.
               </p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">3. Disclaimer of Financial Advice</h3>
               <p className="leading-relaxed">
-                The information provided by ChartAI does not constitute financial advice, investment advice, trading advice, or any other sort of advice. The decision to trade and the execution of trading transactions are the sole responsibility of the user.
+                The information provided by MarketEvo does not constitute financial advice, investment advice, trading advice, or any other sort of advice. The decision to trade and the execution of trading transactions are the sole responsibility of the user.
               </p>
             </section>
 
@@ -46,7 +46,7 @@ export default function TermsPage() {
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">5. Subscription and Billing</h3>
               <p className="leading-relaxed">
-                Some features of ChartAI require a paid subscription. By subscribing, you agree to pay the fees as described at the time of your subscription. Subscriptions renew automatically unless canceled before the renewal date. You may cancel your subscription at any time from your account settings.
+                Some features of MarketEvo require a paid subscription. By subscribing, you agree to pay the fees as described at the time of your subscription. Subscriptions renew automatically unless canceled before the renewal date. You may cancel your subscription at any time from your account settings.
               </p>
             </section>
 
@@ -74,28 +74,28 @@ export default function TermsPage() {
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">9. Intellectual Property</h3>
               <p className="leading-relaxed">
-                All content on ChartAI, including but not limited to algorithms, software, design, and graphics, is the property of ChartAI and is protected by intellectual property laws. Users may not reproduce, distribute, or create derivative works without express written permission.
+                All content on MarketEvo, including but not limited to algorithms, software, design, and graphics, is the property of MarketEvo and is protected by intellectual property laws. Users may not reproduce, distribute, or create derivative works without express written permission.
               </p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">10. Service Availability</h3>
               <p className="leading-relaxed">
-                While we strive to maintain continuous service availability, ChartAI does not guarantee uninterrupted access to the Service. We reserve the right to suspend or terminate the Service for maintenance, updates, or other operational reasons.
+                While we strive to maintain continuous service availability, MarketEvo does not guarantee uninterrupted access to the Service. We reserve the right to suspend or terminate the Service for maintenance, updates, or other operational reasons.
               </p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">11. Limitation of Liability</h3>
               <p className="leading-relaxed">
-                ChartAI shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages resulting from the use of, or inability to use, the Service. This includes but is not limited to trading losses, lost profits, or data loss.
+                MarketEvo shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages resulting from the use of, or inability to use, the Service. This includes but is not limited to trading losses, lost profits, or data loss.
               </p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-gray-900 mb-3">12. Changes to Terms</h3>
               <p className="leading-relaxed">
-                ChartAI reserves the right to modify these Terms and Conditions at any time. Users will be notified of significant changes via email or through the Service, but are encouraged to review these terms periodically. Continued use of the Service constitutes acceptance of any changes.
+                MarketEvo reserves the right to modify these Terms and Conditions at any time. Users will be notified of significant changes via email or through the Service, but are encouraged to review these terms periodically. Continued use of the Service constitutes acceptance of any changes.
               </p>
             </section>
 
@@ -110,8 +110,8 @@ export default function TermsPage() {
               <h3 className="text-xl font-bold text-gray-900 mb-3">14. Contact Information</h3>
               <p className="leading-relaxed">
                 If you have any questions or concerns about these Terms and Conditions, please contact us at{' '}
-                <a href="mailto:support@chartai.com" className="text-purple-600 hover:text-purple-500">
-                  support@chartai.com
+                <a href="mailto:support@MarketEvo.co" className="text-purple-600 hover:text-purple-500">
+                  support@MarketEvo.co
                 </a>
               </p>
             </section>

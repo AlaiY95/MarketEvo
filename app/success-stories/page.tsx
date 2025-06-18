@@ -15,7 +15,7 @@ export default function SuccessStoriesPage() {
                   <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-gray-900">ChartAI</span>
+              <span className="text-xl font-bold text-gray-900">MarketEvo</span>
             </Link>
 
             {/* Navigation */}
@@ -108,7 +108,7 @@ export default function SuccessStoriesPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-purple-600">8 months</div>
-                  <div className="text-sm text-gray-600">Using ChartAI</div>
+                  <div className="text-sm text-gray-600">Using MarketEvo</div>
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function SuccessStoriesPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-purple-600">5 months</div>
-                  <div className="text-sm text-gray-600">Using ChartAI</div>
+                  <div className="text-sm text-gray-600">Using MarketEvo</div>
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function SuccessStoriesPage() {
                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                   </svg>
                 </div>
-                <span className="text-xl font-bold text-gray-900">ChartAI</span>
+                <span className="text-xl font-bold text-gray-900">MarketEvo</span>
               </div>
               <p className="text-gray-600 text-sm">AI mentorship. No gurus—just data.</p>
             </div>

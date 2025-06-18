@@ -15,7 +15,7 @@ export default function BlogPage() {
                   <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-gray-900">ChartAI</span>
+              <span className="text-xl font-bold text-gray-900">MarketEvo</span>
             </Link>
 
             {/* Navigation */}
@@ -47,7 +47,7 @@ export default function BlogPage() {
             How Traders Win
           </h1>
           <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-8">
-            With ChartAI
+            With MarketEvo
           </h2>
           
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-12">
@@ -79,11 +79,11 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* The ChartAI Advantage */}
+      {/* The MarketEvo Advantage */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">The ChartAI Advantage</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">The MarketEvo Advantage</h2>
             <p className="text-xl text-gray-600">What makes our platform the choice of successful traders worldwide</p>
           </div>
 
@@ -99,7 +99,7 @@ export default function BlogPage() {
                   Our advanced AI analyzes millions of chart patterns to identify high-probability trading setups that human traders often miss.
                 </p>
                 <div className="space-y-4 text-gray-600">
-                  <p>At ChartAI, we've revolutionized pattern recognition by training our AI on over 50 million historical trading patterns. Our algorithms process over 10 million historical patterns daily, learning from every market movement to provide you with precise entry and exit points.</p>
+                  <p>At MarketEvo, we've revolutionized pattern recognition by training our AI on over 50 million historical trading patterns. Our algorithms process over 10 million historical patterns daily, learning from every market movement to provide you with precise entry and exit points.</p>
                   <p>The AI doesn't just recognize shapes – it understands market context, volume confirmation, and institutional behavior patterns that separate winning trades from losing ones.</p>
                 </div>
               </div>
@@ -138,7 +138,7 @@ export default function BlogPage() {
                   Protect your capital with our scientifically-backed risk management tools that calculate optimal position sizes and stop losses.
                 </p>
                 <div className="space-y-4 text-gray-600">
-                  <p>Risk management is the foundation of profitable trading, and ChartAI excels in this critical area. Our platform automatically calculates the perfect position size based on your account size, risk tolerance, and the specific trade setup. We provide dynamic stop-loss recommendations that adapt to market volatility, ensuring you never risk more than you can afford to lose while maximizing your profit potential.</p>
+                  <p>Risk management is the foundation of profitable trading, and MarketEvo excels in this critical area. Our platform automatically calculates the perfect position size based on your account size, risk tolerance, and the specific trade setup. We provide dynamic stop-loss recommendations that adapt to market volatility, ensuring you never risk more than you can afford to lose while maximizing your profit potential.</p>
                 </div>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function BlogPage() {
                   Stay ahead of the market with live analysis that processes thousands of instruments simultaneously across all timeframes.
                 </p>
                 <div className="space-y-4 text-gray-600">
-                  <p>While other traders struggle with delayed information, ChartAI users benefit from real-time market analysis that processes data in milliseconds. Our system monitors thousands of trading instruments across multiple timeframes, identifying breakouts, trend changes, and reversal patterns as they develop. This speed advantage means you'll never miss a profitable opportunity again.</p>
+                  <p>While other traders struggle with delayed information, MarketEvo users benefit from real-time market analysis that processes data in milliseconds. Our system monitors thousands of trading instruments across multiple timeframes, identifying breakouts, trend changes, and reversal patterns as they develop. This speed advantage means you'll never miss a profitable opportunity again.</p>
                 </div>
               </div>
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 text-center">
@@ -178,13 +178,13 @@ export default function BlogPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Your Path to Trading Success</h2>
-            <p className="text-xl text-gray-600">How ChartAI transforms traders at every level</p>
+            <p className="text-xl text-gray-600">How MarketEvo transforms traders at every level</p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-16">
-            {/* How ChartAI Users Achieve 71% Win Rates */}
+            {/* How MarketEvo Users Achieve 71% Win Rates */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">How ChartAI Users Achieve 71% Win Rates</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">How MarketEvo Users Achieve 71% Win Rates</h3>
               <p className="text-gray-600 mb-8">
                 Our users consistently outperform the market because they have access to institutional-grade analysis tools. The AI identifies patterns with 95% accuracy by analyzing volume, price action, and market structure simultaneously. This comprehensive approach filters out false signals and focuses only on high-probability setups.
               </p>
@@ -240,7 +240,7 @@ export default function BlogPage() {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">From Beginner to Profitable in 90 Days</h3>
               <p className="text-gray-600 mb-8">
-                ChartAI's structured approach transforms trading newcomers into confident, profitable traders in just three months. Our educational resources combined with AI guidance create the perfect learning environment where theory meets practical application.
+                MarketEvo's structured approach transforms trading newcomers into confident, profitable traders in just three months. Our educational resources combined with AI guidance create the perfect learning environment where theory meets practical application.
               </p>
               
               <div className="grid md:grid-cols-2 gap-6">
@@ -300,7 +300,7 @@ export default function BlogPage() {
             Start Your Trading Journey Today
           </h2>
           <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of traders who are already winning with ChartAI's advanced analysis tools.
+            Join thousands of traders who are already winning with MarketEvo's advanced analysis tools.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -337,7 +337,7 @@ export default function BlogPage() {
                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                   </svg>
                 </div>
-                <span className="text-xl font-bold text-gray-900">ChartAI</span>
+                <span className="text-xl font-bold text-gray-900">MarketEvo</span>
               </div>
               <p className="text-gray-600 text-sm">AI mentorship. No gurus—just data.</p>
             </div>

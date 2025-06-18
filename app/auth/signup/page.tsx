@@ -85,7 +85,7 @@ export default function SignUp() {
               Create an account
             </h2>
             <p className="text-gray-600">
-              Enter your details to get started with ChartAI
+              Enter your details to get started with MarketEvo
             </p>
           </div>
 
