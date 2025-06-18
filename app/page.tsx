@@ -6,15 +6,39 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { 
+  trackCTAClick, 
+  trackPricingToggle, 
+  trackFAQClick, 
+  trackNavClick,
+  trackUTMParameters,
+  trackTimeOnPage,
+  trackScrollDepth,
+  trackSectionView,
+  testTracking,
+  isTrackingReady
+} from './lib/gtag'
 
-// FAQ Item Component
-function FAQItem({ question, answer }) {
+// FAQ Item Component with TypeScript
+interface FAQItemProps {
+  question: string
+  answer: string
+}
+
+function FAQItem({ question, answer }: FAQItemProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleFAQClick = () => {
+    setIsOpen(!isOpen)
+    if (!isOpen) {
+      trackFAQClick(question)
+    }
+  }
 
   return (
     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleFAQClick}
         className="w-full text-left p-6 focus:outline-none"
       >
         <div className="flex items-center justify-between">
@@ -42,12 +66,88 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
   const [isAnnual, setIsAnnual] = useState(false)
 
+  // Analytics tracking setup
+  useEffect(() => {
+    console.log('🏠 Home page loaded - initializing analytics')
+    
+    // Track UTM parameters on page load
+    trackUTMParameters()
+    
+    // Start time tracking
+    const stopTimeTracking = trackTimeOnPage()
+    
+    // Check if tracking is ready
+    setTimeout(() => {
+      const ready = isTrackingReady()
+      console.log('📊 Analytics ready:', ready)
+    }, 2000)
+    
+    // Track page sections when they come into view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionName = entry.target.id || entry.target.getAttribute('data-section') || 'unknown_section'
+            trackSectionView(sectionName)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    // Observe main sections
+    const sections = document.querySelectorAll('#features, #pricing, [data-section]')
+    sections.forEach(section => observer.observe(section))
+
+    // Scroll depth tracking
+    const scrollPercentages = [25, 50, 75, 90]
+    const trackedPercentages = new Set<number>()
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const scrollPercent = Math.round((scrollTop / docHeight) * 100)
+
+      scrollPercentages.forEach(percentage => {
+        if (scrollPercent >= percentage && !trackedPercentages.has(percentage)) {
+          trackedPercentages.add(percentage)
+          trackScrollDepth(percentage)
+        }
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Cleanup function
+    return () => {
+      stopTimeTracking()
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   useEffect(() => {
     if (session) {
       router.push('/dashboard')
     }
     setIsVisible(true)
   }, [session, router])
+
+  // Enhanced CTA click handler
+  const handleCTAClick = (ctaName: string, location: string, utmCampaign?: string, utmContent?: string) => {
+    trackCTAClick(ctaName, location, utmCampaign, utmContent)
+  }
+
+  // Enhanced pricing toggle handler
+  const handlePricingToggle = (planType: string) => {
+    trackPricingToggle(planType)
+    setIsAnnual(planType === 'annual')
+  }
+
+  // Navigation click handler
+  const handleNavClick = (navItem: string) => {
+    trackNavClick(navItem)
+  }
 
   if (status === 'loading') {
     return (
@@ -129,13 +229,55 @@ export default function Home() {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-300 hover:text-white transition-colors font-medium">Features</a>
-            <Link href="/ai-engine" className="text-gray-300 hover:text-white transition-colors font-medium">AI-Engine</Link>
-            <Link href="/success-stories" className="text-gray-300 hover:text-white transition-colors font-medium">Success Stories</Link>
-            <Link href="/academy" className="text-gray-300 hover:text-white transition-colors font-medium">Academy</Link>
-            <Link href="/blog" className="text-gray-300 hover:text-white transition-colors font-medium">Blog</Link>
-            <Link href="/auth/signin" className="text-gray-300 hover:text-white transition-colors font-medium">Login</Link>
-            <Link href="/auth/signup" className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-medium transition-colors">Sign Up</Link>
+            <a 
+              href="#features" 
+              onClick={() => handleNavClick('features')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              Features
+            </a>
+            <Link 
+              href="/ai-engine" 
+              onClick={() => handleNavClick('ai-engine')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              AI-Engine
+            </Link>
+            <Link 
+              href="/success-stories" 
+              onClick={() => handleNavClick('success-stories')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              Success Stories
+            </Link>
+            <Link 
+              href="/academy" 
+              onClick={() => handleNavClick('academy')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              Academy
+            </Link>
+            <Link 
+              href="/blog" 
+              onClick={() => handleNavClick('blog')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              Blog
+            </Link>
+            <Link 
+              href="/auth/signin" 
+              onClick={() => handleNavClick('login')}
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              Login
+            </Link>
+            <Link 
+              href="/auth/signup" 
+              onClick={() => handleCTAClick('header_signup', 'navigation')}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-medium transition-colors"
+            >
+              Sign Up
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -147,7 +289,7 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} data-section="hero">
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent bg-300% animate-gradient">
               AI-Powered
@@ -167,6 +309,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Link
               href="/auth/signup?utm_source=landing&utm_medium=cta&utm_campaign=hero_primary&utm_content=start_free_analysis"
+              onClick={() => handleCTAClick('start_free_analysis', 'hero_section', 'hero_primary', 'start_free_analysis')}
               className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
             >
               <span className="relative z-10">Start Free Analysis</span>
@@ -174,6 +317,7 @@ export default function Home() {
             </Link>
             <Link
               href="/auth/signin?utm_source=landing&utm_medium=cta&utm_campaign=hero_secondary&utm_content=sign_in"
+              onClick={() => handleCTAClick('sign_in', 'hero_section', 'hero_secondary', 'sign_in')}
               className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-300"
             >
               Sign In
@@ -235,7 +379,7 @@ export default function Home() {
         </div>
 
         {/* Demo Section */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 mb-20">
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 mb-20" data-section="demo">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white mb-4">See It In Action</h2>
             <p className="text-gray-300 text-lg">Upload a chart and watch AI work its magic</p>
@@ -297,7 +441,7 @@ export default function Home() {
         </div>
 
         {/* Comprehensive Features Section */}
-        <div className="mb-20">
+        <div className="mb-20" data-section="comprehensive-features">
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-purple-100/10 text-purple-300 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
@@ -388,6 +532,7 @@ export default function Home() {
               <p className="text-gray-300 mb-6">Start analyzing charts with AI today</p>
               <Link
                 href="/auth/signup?utm_source=landing&utm_medium=cta&utm_campaign=features_section&utm_content=get_started"
+                onClick={() => handleCTAClick('get_started', 'features_section', 'features_section', 'get_started')}
                 className="inline-block bg-gradient-to-r from-purple-500 to-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
               >
                 Get Started
@@ -397,7 +542,7 @@ export default function Home() {
         </div>
 
         {/* Success Stories / Testimonials Section */}
-        <div className="mb-20">
+        <div className="mb-20" data-section="testimonials">
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-orange-100/10 text-orange-300 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
@@ -503,10 +648,7 @@ export default function Home() {
             {/* Monthly/Annual Toggle */}
             <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full p-1 mb-12">
               <button 
-                onClick={() => {
-                  console.log('Monthly clicked');
-                  setIsAnnual(false);
-                }}
+                onClick={() => handlePricingToggle('monthly')}
                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                   !isAnnual 
                     ? 'bg-purple-600 text-white shadow-lg' 
@@ -516,10 +658,7 @@ export default function Home() {
                 Monthly
               </button>
               <button 
-                onClick={() => {
-                  console.log('Annual clicked');
-                  setIsAnnual(true);
-                }}
+                onClick={() => handlePricingToggle('annual')}
                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 relative ${
                   isAnnual 
                     ? 'bg-purple-600 text-white shadow-lg' 
@@ -598,6 +737,7 @@ export default function Home() {
                 {/* CTA Button */}
                 <Link
                   href="/auth/signup?utm_source=landing&utm_medium=cta&utm_campaign=pricing_section&utm_content=start_analyzing"
+                  onClick={() => handleCTAClick('start_analyzing', 'pricing_section', 'pricing_section', 'start_analyzing')}
                   className="w-full bg-gradient-to-r from-purple-500 to-blue-600 text-white py-4 rounded-xl font-semibold hover:from-purple-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -626,7 +766,7 @@ export default function Home() {
         </div>
 
         {/* FAQ Section */}
-        <div className="mb-20">
+        <div className="mb-20" data-section="faq">
           <div className="text-center mb-16">
             <div className="inline-flex items-center space-x-2 bg-blue-100/10 text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
@@ -675,6 +815,18 @@ export default function Home() {
           <p>&copy; 2025 MarketEvo. All rights reserved. Trade responsibly.</p>
         </footer>
       </div>
+
+      {/* Analytics Debug Component - Only in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            onClick={() => testTracking()}
+            className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-purple-700 text-sm"
+          >
+            🧪 Test Analytics
+          </button>
+        </div>
+      )}
 
       <style jsx>{`
         @keyframes gradient {
