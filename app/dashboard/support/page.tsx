@@ -88,18 +88,18 @@ export default function SupportPage() {
               <select
                 value={formData.reason}
                 onChange={(e) => handleInputChange('reason', e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white appearance-none"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white appearance-none text-gray-900 placeholder-gray-500"
                 required
               >
-                <option value="">Select a reason...</option>
+                <option value="" className="text-gray-500">Select a reason...</option>
                 {reasons.map((reason) => (
-                  <option key={reason} value={reason}>
+                  <option key={reason} value={reason} className="text-gray-900">
                     {reason}
                   </option>
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                <svg className="h-5 w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -117,14 +117,14 @@ export default function SupportPage() {
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="your.email@example.com"
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                 required
               />
               <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <span className="text-gray-400">👤</span>
+                <span className="text-gray-600">👤</span>
               </div>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-gray-700 mt-1">
               We'll use this email to respond to your request.
             </p>
           </div>
@@ -139,7 +139,7 @@ export default function SupportPage() {
               value={formData.subject}
               onChange={(e) => handleInputChange('subject', e.target.value)}
               placeholder="Brief description of your request..."
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
               required
             />
           </div>
@@ -154,7 +154,7 @@ export default function SupportPage() {
               onChange={(e) => handleInputChange('message', e.target.value)}
               placeholder="Please provide detailed information about your request, including any steps to reproduce issues..."
               rows={6}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-gray-900 placeholder-gray-500"
               required
             />
           </div>
@@ -173,7 +173,7 @@ export default function SupportPage() {
       {/* Response Time Info */}
       <div className="bg-gray-50 rounded-lg p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-3">Response Time</h2>
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-800 leading-relaxed">
           We typically respond to support requests within <strong>24-48 hours</strong> during business days. 
           For urgent issues, please include <strong>"URGENT"</strong> in your subject line.
         </p>
@@ -187,28 +187,28 @@ export default function SupportPage() {
             <span className="text-xl">📚</span>
             <div>
               <h3 className="font-medium text-gray-900">Documentation</h3>
-              <p className="text-sm text-gray-600">Browse our comprehensive guides and tutorials</p>
+              <p className="text-sm text-gray-700">Browse our comprehensive guides and tutorials</p>
             </div>
           </div>
           <div className="flex items-start space-x-3">
             <span className="text-xl">💬</span>
             <div>
               <h3 className="font-medium text-gray-900">Live Chat</h3>
-              <p className="text-sm text-gray-600">Get instant help during business hours</p>
+              <p className="text-sm text-gray-700">Get instant help during business hours</p>
             </div>
           </div>
           <div className="flex items-start space-x-3">
             <span className="text-xl">🎥</span>
             <div>
               <h3 className="font-medium text-gray-900">Video Tutorials</h3>
-              <p className="text-sm text-gray-600">Learn how to use our trading analysis tools</p>
+              <p className="text-sm text-gray-700">Learn how to use our trading analysis tools</p>
             </div>
           </div>
           <div className="flex items-start space-x-3">
             <span className="text-xl">❓</span>
             <div>
               <h3 className="font-medium text-gray-900">FAQ</h3>
-              <p className="text-sm text-gray-600">Find answers to common questions</p>
+              <p className="text-sm text-gray-700">Find answers to common questions</p>
             </div>
           </div>
         </div>
