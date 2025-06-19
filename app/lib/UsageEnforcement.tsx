@@ -250,8 +250,8 @@ export async function recordUsage(
         analysesUsed: {
           increment: 1,
         },
-        // Update lastResetDate if it's a new day/month
-        lastResetDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+        // Use consistent date format with your other files (toDateString)
+        lastResetDate: new Date().toDateString(), // Match the format used in register route
       },
     });
 

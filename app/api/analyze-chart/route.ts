@@ -1,9 +1,8 @@
-// app/api/analyze-chart/route.ts - Enhanced Version
+// app/api/analyze-chart/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { anthropic, getTradingPrompt } from "@/lib/claude";
-import { incrementUsage } from "@/lib/usage";
 import { checkUsagePermission, recordUsage } from "@/lib/UsageEnforcement";
 import { prisma } from "@/lib/prisma";
 import fs from "fs";
@@ -207,7 +206,7 @@ export async function POST(request: Request) {
     // Determine media type from file type
     const mediaType = file.type.startsWith("image/") ? file.type : "image/png";
 
-    console.log("Sending request to Claude...");
+    console.log("📊 About to send request to Claude for analysis...");
 
     const response = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
@@ -233,7 +232,7 @@ export async function POST(request: Request) {
       ],
     });
 
-    console.log("Received response from Claude");
+    console.log("✅ Received response from Claude");
 
     // Safely extract the analysis text
     const analysisText = response.content[0]?.text || "No analysis generated";
@@ -252,7 +251,7 @@ export async function POST(request: Request) {
     }
 
     // SAVE ANALYSIS TO DATABASE
-    console.log("Saving analysis to database...");
+    console.log("💾 Saving analysis to database...");
     try {
       const savedAnalysis = await prisma.chartAnalysis.create({
         data: {
@@ -273,24 +272,35 @@ export async function POST(request: Request) {
         },
       });
 
-      console.log("Analysis saved successfully with ID:", savedAnalysis.id);
+      console.log("✅ Analysis saved successfully with ID:", savedAnalysis.id);
     } catch (dbError) {
-      console.error("Failed to save analysis to database:", dbError);
+      console.error("❌ Failed to save analysis to database:", dbError);
       // Don't fail the whole request if database save fails
     }
 
-    // 🛡️ RECORD USAGE - Using both systems for compatibility
-    console.log("Recording usage...");
+    // 🛡️ RECORD USAGE - ONLY USE ONE SYSTEM TO PREVENT DOUBLE COUNTING
+    console.log("📊 Recording usage (single increment only)...");
     try {
-      // Use your existing incrementUsage function
-      const updatedUsage = await incrementUsage(userId);
-      console.log("Legacy usage incremented successfully:", updatedUsage);
+      // Get current usage before incrementing for logging
+      const userBefore = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { analysesUsed: true },
+      });
 
-      // Also use new usage enforcement system
+      console.log(`📊 User ${userId} usage before increment: ${userBefore?.analysesUsed || 0}`);
+
       await recordUsage(userId);
-      console.log("New usage system recorded successfully");
+
+      // Check usage after increment for verification
+      const userAfter = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { analysesUsed: true },
+      });
+
+      console.log(`📊 User ${userId} usage after increment: ${userAfter?.analysesUsed || 0}`);
+      console.log("✅ Usage recorded successfully");
     } catch (usageError) {
-      console.error("Failed to record usage:", usageError);
+      console.error("❌ Failed to record usage:", usageError);
       // Don't fail the whole request if usage recording fails
     }
 
@@ -316,9 +326,49 @@ export async function POST(request: Request) {
       },
     });
   } catch (error: any) {
-    console.error("Analysis error:", error);
+    console.error("❌ Analysis error:", error);
 
-    // Your existing error handling code stays the same...
+    // Handle specific Anthropic API errors
+    if (error.status === 400 && error.error?.type === "invalid_request_error") {
+      if (error.error?.message?.includes("credit")) {
+        return NextResponse.json(
+          {
+            error: "Insufficient credits. Please add credits to your Anthropic account.",
+          },
+          { status: 402 }
+        );
+      }
+      if (error.error?.message?.includes("image")) {
+        return NextResponse.json(
+          {
+            error: "Could not process image. Please check image format and size.",
+            details: error.error.message,
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (error.status === 429) {
+      return NextResponse.json(
+        {
+          error: "Rate limit exceeded. Please try again later.",
+        },
+        { status: 429 }
+      );
+    }
+
+    // Handle overloaded errors
+    if (error.status === 529) {
+      return NextResponse.json(
+        {
+          error: "Claude's servers are temporarily overloaded. Please try again in a moment.",
+          details: "This is a temporary issue that usually resolves quickly.",
+        },
+        { status: 529 }
+      );
+    }
+
     return NextResponse.json(
       {
         error: "Analysis failed",
