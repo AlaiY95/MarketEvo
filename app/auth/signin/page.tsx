@@ -183,13 +183,13 @@ export default function SignIn() {
           </form>
 
           {/* Demo Account Info */}
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          {/* <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h4 className="font-semibold text-blue-900 mb-2">Demo Account</h4>
             <div className="text-sm text-blue-800 space-y-1">
               <p><strong>Email:</strong> test@example.com</p>
               <p><strong>Password:</strong> password123</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
