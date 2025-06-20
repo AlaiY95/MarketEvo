@@ -473,27 +473,27 @@ export default function DayTrading() {
             </div>
 
             {/* Day Trading Metrics */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Day Trading Metrics</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Hold Period</span>
-                  <span className="font-medium">30min - 8hours</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Risk/Reward</span>
-                  <span className="font-medium text-green-600">1:1.5 - 1:3</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Win Rate Target</span>
-                  <span className="font-medium text-blue-600">55-65%</span>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600">Position Size</span>
-                  <span className="font-medium">1-2% risk</span>
-                </div>
-              </div>
-            </div>
+<div className="bg-white rounded-lg shadow border p-6">
+  <h3 className="text-lg font-semibold text-gray-900 mb-4">Day Trading Metrics</h3>
+  <div className="space-y-4">
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Hold Period</span>
+      <span className="font-semibold text-gray-900">30min - 8hours</span>
+    </div>
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Risk/Reward</span>
+      <span className="font-semibold text-green-600">1:1.5 - 1:3</span>
+    </div>
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Win Rate Target</span>
+      <span className="font-semibold text-blue-600">55-65%</span>
+    </div>
+    <div className="flex justify-between items-center py-2">
+      <span className="text-gray-600">Position Size</span>
+      <span className="font-semibold text-gray-900">1-2% risk</span>
+    </div>
+  </div>
+</div>
 
             {/* Day Trading Rules */}
             <div className="bg-white rounded-lg shadow border p-6">

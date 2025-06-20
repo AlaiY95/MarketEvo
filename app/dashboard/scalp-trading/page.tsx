@@ -260,10 +260,10 @@ export default function ScalpTrading() {
                 <span className="text-2xl">⚡</span>
                 <h1 className="text-3xl font-bold text-gray-900">Scalp Trading</h1>
                 {/* Info tooltip */}
-                <div className="relative group">
-                  <div className="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs cursor-help">
-                    i
-                  </div>
+<div className="relative group">
+  <div className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs cursor-help">
+    i
+  </div>
                   {/* Tooltip content */}
                   <div className="absolute left-0 top-6 w-80 bg-white border border-gray-200 rounded-lg shadow-lg p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -471,27 +471,27 @@ export default function ScalpTrading() {
             </div>
 
             {/* Scalp Trading Metrics */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Scalp Trading Metrics</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Hold Period</span>
-                  <span className="font-medium">30sec - 30min</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Risk/Reward</span>
-                  <span className="font-medium text-red-600">1:1 - 1:2</span>
-                </div>
-                <div className="flex justify-between items-center py-2 border-b">
-                  <span className="text-gray-600">Win Rate Target</span>
-                  <span className="font-medium text-blue-600">70-80%</span>
-                </div>
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600">Position Size</span>
-                  <span className="font-medium">0.5-1% risk</span>
-                </div>
-              </div>
-            </div>
+<div className="bg-white rounded-lg shadow border p-6">
+  <h3 className="text-lg font-semibold text-gray-900 mb-4">Scalp Trading Metrics</h3>
+  <div className="space-y-4">
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Hold Period</span>
+      <span className="font-semibold text-gray-900">30sec - 30min</span>
+    </div>
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Risk/Reward</span>
+      <span className="font-semibold text-red-600">1:1 - 1:2</span>
+    </div>
+    <div className="flex justify-between items-center py-2 border-b">
+      <span className="text-gray-600">Win Rate Target</span>
+      <span className="font-semibold text-blue-600">70-80%</span>
+    </div>
+    <div className="flex justify-between items-center py-2">
+      <span className="text-gray-600">Position Size</span>
+      <span className="font-semibold text-gray-900">0.5-1% risk</span>
+    </div>
+  </div>
+</div>
 
             {/* Scalp Trading Rules */}
             <div className="bg-white rounded-lg shadow border p-6">
