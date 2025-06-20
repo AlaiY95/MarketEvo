@@ -65,6 +65,7 @@ export default function Home() {
   const router = useRouter()
   const [isVisible, setIsVisible] = useState(false)
   const [isAnnual, setIsAnnual] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Analytics tracking setup
   useEffect(() => {
@@ -180,6 +181,15 @@ export default function Home() {
 
   const currentPricing = isAnnual ? pricingData.annual : pricingData.monthly
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const handleMobileNavClick = (navItem: string) => {
+    handleNavClick(navItem)
+    setIsMobileMenuOpen(false) // Close menu after click
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 overflow-hidden">
       {/* Animated background elements */}
@@ -217,7 +227,7 @@ export default function Home() {
 
       <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Header */}
-        <header className="flex justify-between items-center mb-16">
+        <header className="flex justify-between items-center mb-16 relative">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -281,11 +291,92 @@ export default function Home() {
           </nav>
 
           {/* Mobile menu button */}
-          <button className="md:hidden p-2 text-gray-300 hover:text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+          <button 
+            onClick={toggleMobileMenu}
+            className="md:hidden p-2 text-gray-300 hover:text-white focus:outline-none focus:text-white transition-colors"
+            aria-label="Toggle mobile menu"
+          >
+            {/* Hamburger icon that transforms to X when open */}
+            <div className="w-6 h-6 relative">
+              <span className={`absolute block h-0.5 w-6 bg-current transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'rotate-45 top-2.5' : 'top-1'
+              }`}></span>
+              <span className={`absolute block h-0.5 w-6 bg-current transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'opacity-0' : 'top-2.5'
+              }`}></span>
+              <span className={`absolute block h-0.5 w-6 bg-current transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? '-rotate-45 top-2.5' : 'top-4'
+              }`}></span>
+            </div>
           </button>
+
+          {/* MOBILE NAVIGATION MENU */}
+          <div className={`absolute top-full left-0 right-0 md:hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen 
+              ? 'opacity-100 visible transform translate-y-0' 
+              : 'opacity-0 invisible transform -translate-y-4'
+          }`}>
+            <div className="bg-gray-900/95 backdrop-blur-lg border border-white/10 rounded-2xl mt-4 p-6 shadow-2xl">
+              <nav className="flex flex-col space-y-4">
+                <a 
+                  href="#features" 
+                  onClick={() => handleMobileNavClick('features')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  Features
+                </a>
+                <Link 
+                  href="/ai-engine" 
+                  onClick={() => handleMobileNavClick('ai-engine')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  AI-Engine
+                </Link>
+                <Link 
+                  href="/success-stories" 
+                  onClick={() => handleMobileNavClick('success-stories')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  Success Stories
+                </Link>
+                <Link 
+                  href="/academy" 
+                  onClick={() => handleMobileNavClick('academy')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  Academy
+                </Link>
+                <Link 
+                  href="/blog" 
+                  onClick={() => handleMobileNavClick('blog')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  Blog
+                </Link>
+                
+                {/* Divider */}
+                <div className="border-t border-white/10 my-2"></div>
+                
+                <Link 
+                  href="/auth/signin" 
+                  onClick={() => handleMobileNavClick('login')}
+                  className="text-gray-300 hover:text-white transition-colors font-medium py-2 px-4 rounded-lg hover:bg-white/10"
+                >
+                  Login
+                </Link>
+                <Link 
+                  href="/auth/signup" 
+                  onClick={() => {
+                    handleCTAClick('mobile_header_signup', 'mobile_navigation')
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 font-medium transition-colors text-center"
+                >
+                  Sign Up
+                </Link>
+              </nav>
+            </div>
+          </div>
         </header>
 
         {/* Hero Section */}
