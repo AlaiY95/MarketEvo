@@ -311,11 +311,14 @@ export default function Home() {
           </button>
 
           {/* MOBILE NAVIGATION MENU */}
-          <div className={`absolute top-full left-0 right-0 md:hidden transition-all duration-300 ease-in-out ${
+          <div className={`absolute top-full left-0 right-0 md:hidden transition-all duration-300 ease-in-out z-50 ${
             isMobileMenuOpen 
               ? 'opacity-100 visible transform translate-y-0' 
               : 'opacity-0 invisible transform -translate-y-4'
           }`}>
+            {/* Backdrop overlay */}
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm -z-10" 
+                onClick={() => setIsMobileMenuOpen(false)}></div>
             <div className="bg-gray-900/95 backdrop-blur-lg border border-white/10 rounded-2xl mt-4 p-6 shadow-2xl">
               <nav className="flex flex-col space-y-4">
                 <a 
