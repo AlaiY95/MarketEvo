@@ -97,16 +97,64 @@ export default function PreTradeCalculator({
     
     if (!entryPrice || !stopLoss) return null;
 
+    // Calculate risk amount
     const riskAmount = (accountBalance * riskPerTrade) / 100;
-    const riskPerShare = Math.abs(entryPrice - stopLoss);
-    const positionSize = riskPerShare > 0 ? Math.floor(riskAmount / riskPerShare) : 0;
-    const totalPosition = positionSize * entryPrice;
     
+    // Calculate risk per share
+    const riskPerShare = Math.abs(entryPrice - stopLoss);
+    
+    // Safety check: minimum risk per share should be reasonable
+    if (riskPerShare < 0.01) {
+      return {
+        error: "Stop loss too close to entry price. Risk per share is too small for safe position sizing.",
+        riskAmount,
+        riskPerShare,
+        positionSize: 0,
+        totalPosition: 0,
+        riskRewardRatio: 0,
+        potentialProfit: 0
+      };
+    }
+    
+    // Calculate position size based on risk
+    let positionSize = Math.floor(riskAmount / riskPerShare);
+    
+    // Calculate total position value
+    let totalPosition = positionSize * entryPrice;
+    
+    // Safety check: Total position shouldn't exceed account balance
+    // Use maximum 80% of account balance for position sizing
+    const maxPositionValue = accountBalance * 0.8;
+    
+    if (totalPosition > maxPositionValue) {
+      // Recalculate position size based on max position value
+      positionSize = Math.floor(maxPositionValue / entryPrice);
+      totalPosition = positionSize * entryPrice;
+    }
+    
+    // Safety check: Minimum position size
+    if (positionSize < 1) {
+      return {
+        error: "Position size too small. Consider increasing account balance or risk percentage.",
+        riskAmount,
+        riskPerShare,
+        positionSize: 0,
+        totalPosition: 0,
+        riskRewardRatio: 0,
+        potentialProfit: 0
+      };
+    }
+    
+    // Calculate risk/reward ratio
     let riskRewardRatio = 0;
     if (takeProfit && riskPerShare > 0) {
       const rewardPerShare = Math.abs(takeProfit - entryPrice);
       riskRewardRatio = rewardPerShare / riskPerShare;
     }
+
+    // Calculate actual risk for this position size
+    const actualRisk = positionSize * riskPerShare;
+    const actualRiskPercentage = (actualRisk / accountBalance) * 100;
 
     return {
       riskAmount,
@@ -114,7 +162,10 @@ export default function PreTradeCalculator({
       positionSize,
       totalPosition,
       riskRewardRatio,
-      potentialProfit: takeProfit ? Math.abs(takeProfit - entryPrice) * positionSize : 0
+      potentialProfit: takeProfit ? Math.abs(takeProfit - entryPrice) * positionSize : 0,
+      actualRisk,
+      actualRiskPercentage,
+      maxPositionValue
     };
   };
 
@@ -250,50 +301,97 @@ export default function PreTradeCalculator({
       {metrics && hasValidAnalysis && (
         <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
           <h4 className="font-medium text-gray-900 mb-3">Calculated Trade Metrics</h4>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span style={{ color: '#374151' }}>Risk Amount:</span>
-              <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.riskAmount.toFixed(2)}</span>
+          
+          {/* Error Display */}
+          {metrics.error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+              <div className="flex items-start">
+                <span className="text-red-600 text-lg mr-2">⚠️</span>
+                <div>
+                  <h5 className="font-medium text-red-800 mb-1">Position Sizing Issue</h5>
+                  <p className="text-red-700 text-sm">{metrics.error}</p>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span style={{ color: '#374151' }}>Position Size:</span>
-              <span style={{ color: '#111827', fontWeight: '600' }}>{metrics.positionSize} shares</span>
-            </div>
-            <div className="flex justify-between">
-              <span style={{ color: '#374151' }}>Total Position:</span>
-              <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.totalPosition.toFixed(2)}</span>
-            </div>
-            {metrics.riskRewardRatio > 0 && (
+          )}
+          
+          {/* Valid Metrics */}
+          {!metrics.error && (
+            <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span style={{ color: '#374151' }}>Risk/Reward:</span>
+                <span style={{ color: '#374151' }}>Target Risk Amount:</span>
+                <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.riskAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span style={{ color: '#374151' }}>Risk Per Share:</span>
+                <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.riskPerShare.toFixed(3)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span style={{ color: '#374151' }}>Position Size:</span>
+                <span style={{ color: '#111827', fontWeight: '600' }}>{metrics.positionSize.toLocaleString()} shares</span>
+              </div>
+              <div className="flex justify-between">
+                <span style={{ color: '#374151' }}>Total Position Value:</span>
+                <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.totalPosition.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span style={{ color: '#374151' }}>Actual Risk Amount:</span>
+                <span style={{ color: '#111827', fontWeight: '600' }}>${metrics.actualRisk?.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span style={{ color: '#374151' }}>Actual Risk %:</span>
                 <span style={{ 
                   fontWeight: '600',
-                  color: metrics.riskRewardRatio >= 2 ? '#059669' : 
-                         metrics.riskRewardRatio >= 1.5 ? '#d97706' : '#dc2626'
+                  color: (metrics.actualRiskPercentage || 0) <= 2 ? '#059669' : 
+                         (metrics.actualRiskPercentage || 0) <= 5 ? '#d97706' : '#dc2626'
                 }}>
-                  1:{metrics.riskRewardRatio.toFixed(2)}
+                  {metrics.actualRiskPercentage?.toFixed(2)}%
                 </span>
               </div>
-            )}
-            {metrics.potentialProfit > 0 && (
-              <div className="flex justify-between">
-                <span style={{ color: '#374151' }}>Potential Profit:</span>
-                <span style={{ color: '#059669', fontWeight: '600' }}>${metrics.potentialProfit.toFixed(2)}</span>
-              </div>
-            )}
-            {parsedAnalysis?.confidence && (
-              <div className="flex justify-between">
-                <span style={{ color: '#374151' }}>AI Confidence:</span>
-                <span style={{ 
-                  fontWeight: '600',
-                  color: parsedAnalysis.confidence === 'High' ? '#059669' :
-                         parsedAnalysis.confidence === 'Medium' ? '#d97706' : '#dc2626'
-                }}>
-                  {parsedAnalysis.confidence}
-                </span>
-              </div>
-            )}
-          </div>
+              {metrics.riskRewardRatio > 0 && (
+                <div className="flex justify-between">
+                  <span style={{ color: '#374151' }}>Risk/Reward:</span>
+                  <span style={{ 
+                    fontWeight: '600',
+                    color: metrics.riskRewardRatio >= 2 ? '#059669' : 
+                           metrics.riskRewardRatio >= 1.5 ? '#d97706' : '#dc2626'
+                  }}>
+                    1:{metrics.riskRewardRatio.toFixed(2)}
+                  </span>
+                </div>
+              )}
+              {metrics.potentialProfit > 0 && (
+                <div className="flex justify-between">
+                  <span style={{ color: '#374151' }}>Potential Profit:</span>
+                  <span style={{ color: '#059669', fontWeight: '600' }}>${metrics.potentialProfit.toLocaleString()}</span>
+                </div>
+              )}
+              {parsedAnalysis?.confidence && (
+                <div className="flex justify-between">
+                  <span style={{ color: '#374151' }}>AI Confidence:</span>
+                  <span style={{ 
+                    fontWeight: '600',
+                    color: parsedAnalysis.confidence === 'High' ? '#059669' :
+                           parsedAnalysis.confidence === 'Medium' ? '#d97706' : '#dc2626'
+                  }}>
+                    {parsedAnalysis.confidence}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Position Sizing Guidelines */}
+          {!metrics.error && (
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+              <h5 className="font-medium text-blue-800 mb-1">Position Sizing Guidelines</h5>
+              <ul className="text-blue-700 text-xs space-y-1">
+                <li>• Max position value: {((metrics.maxPositionValue || 0) / 1000).toFixed(0)}K (80% of account)</li>
+                <li>• Risk per share should be ≥ $0.01 for safe sizing</li>
+                <li>• Actual risk should stay close to your target risk %</li>
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
