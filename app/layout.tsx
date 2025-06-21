@@ -17,8 +17,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "MarketEvo - AI-Powered Trading Analysis",
-  description: "Transform your trading charts into profitable insights with cutting-edge AI technology. Get precise entry points, risk management, and price targets in seconds.",
-  keywords: ["trading", "chart analysis", "AI", "technical analysis", "forex", "stocks", "crypto", "swing trading", "scalp trading", "risk management"],
+  description: "Transform your trading charts into profitable insights with cutting-edge AI technology.",
+  icons: {
+    icon: [
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },  // High quality!
+      { url: '/site-icon.ico'}  // Fallback for older browsers
+    ],
+    shortcut: '/site-icon.ico',
+    apple: '/apple-touch-icon.png'
+  }
 };
 
 export default function RootLayout({
@@ -30,6 +37,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <GoogleAnalytics />
+         <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="shortcut icon" href="/site-icon.ico" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

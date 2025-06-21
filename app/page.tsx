@@ -16,7 +16,8 @@ import {
   trackScrollDepth,
   trackSectionView,
   testTracking,
-  isTrackingReady
+  isTrackingReady,
+  GA_TRACKING_ID,
 } from './lib/gtag'
 
 // FAQ Item Component with TypeScript
@@ -59,6 +60,180 @@ function FAQItem({ question, answer }: FAQItemProps) {
     </div>
   )
 }
+
+
+
+const UTMDiagnosticTool = () => {
+  const [diagnosticResults, setDiagnosticResults] = useState<any>(null);
+
+  const runFullDiagnosis = () => {
+    console.log("🔬 COMPREHENSIVE UTM DIAGNOSIS");
+    console.log("================================");
+    
+    // 1. URL Analysis
+    const currentUrl = window.location.href;
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    console.log("📍 URL ANALYSIS:");
+    console.log("Full URL:", currentUrl);
+    console.log("Search string:", window.location.search);
+    console.log("Hash:", window.location.hash);
+    
+    // 2. UTM Parameter Extraction
+    const utmParams = {
+      utm_source: urlParams.get("utm_source"),
+      utm_medium: urlParams.get("utm_medium"),
+      utm_campaign: urlParams.get("utm_campaign"),
+      utm_content: urlParams.get("utm_content"),
+      utm_term: urlParams.get("utm_term")
+    };
+    
+    console.log("\n🎯 UTM PARAMETERS:");
+    Object.entries(utmParams).forEach(([key, value]) => {
+      console.log(`${key}:`, value || "❌ NOT FOUND");
+    });
+    
+    // 3. GA4 Setup Check
+    const ga4Setup = {
+      trackingId: GA_TRACKING_ID,
+      gtagFunction: typeof window.gtag,
+      dataLayer: !!window.dataLayer,
+      dataLayerLength: window.dataLayer?.length || 0
+    };
+    
+    console.log("\n🔧 GA4 SETUP:");
+    Object.entries(ga4Setup).forEach(([key, value]) => {
+      console.log(`${key}:`, value);
+    });
+    
+    // 4. Test Manual GA4 Event with UTM
+    if (typeof window.gtag === 'function') {
+      console.log("\n🧪 SENDING TEST EVENT WITH UTM DATA:");
+      
+      const testEventData = {
+        event_category: 'utm_test',
+        event_label: 'manual_utm_test',
+        // Standard GA4 campaign parameters
+        source: utmParams.utm_source,
+        medium: utmParams.utm_medium,
+        campaign: utmParams.utm_campaign,
+        content: utmParams.utm_content,
+        term: utmParams.utm_term,
+        // Alternative parameter names
+        campaign_source: utmParams.utm_source,
+        campaign_medium: utmParams.utm_medium,
+        campaign_name: utmParams.utm_campaign,
+        campaign_content: utmParams.utm_content,
+        campaign_term: utmParams.utm_term,
+        // Custom debug parameters
+        debug_utm_source: utmParams.utm_source,
+        debug_utm_medium: utmParams.utm_medium,
+        debug_utm_campaign: utmParams.utm_campaign,
+        page_location_with_utm: currentUrl
+      };
+      
+      // Send test event
+      window.gtag('event', 'utm_diagnosis_test', testEventData);
+      console.log("✅ Test event sent with data:", testEventData);
+      
+      // Also try sending a page_view with explicit UTM data
+      window.gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: currentUrl,
+        source: utmParams.utm_source,
+        medium: utmParams.utm_medium,
+        campaign: utmParams.utm_campaign
+      });
+      console.log("✅ Enhanced page_view sent");
+      
+    } else {
+      console.log("❌ gtag function not available");
+    }
+    
+    // 5. Check for URL redirects or SPA issues
+    console.log("\n🔄 POTENTIAL ISSUES CHECK:");
+    
+    // Check if this is a single page app navigation
+    const isSPA = window.history && window.history.pushState;
+    console.log("SPA detected:", isSPA);
+    
+    // Check if URL was modified after load
+    const originalUrl = document.referrer;
+    console.log("Original referrer:", originalUrl);
+    
+    // Check for redirects
+    const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navigationEntries.length > 0) {
+      const nav = navigationEntries[0];
+      console.log("Redirect count:", nav.redirectCount);
+      console.log("Navigation type:", nav.type);
+    }
+    
+    // 6. SessionStorage check
+    const storedUTM = sessionStorage.getItem("utm_data");
+    console.log("\n💾 STORED UTM DATA:", storedUTM ? JSON.parse(storedUTM) : "None");
+    
+    // 7. DataLayer inspection
+    console.log("\n📊 DATALAYER CONTENTS:");
+    if (window.dataLayer) {
+      console.log("DataLayer entries:", window.dataLayer.length);
+      // Show last few entries
+      const recentEntries = window.dataLayer.slice(-5);
+      recentEntries.forEach((entry, index) => {
+        console.log(`Entry ${index}:`, entry);
+      });
+    }
+    
+    // Store results for UI display
+    setDiagnosticResults({
+      url: currentUrl,
+      utmParams,
+      ga4Setup,
+      hasUTMParams: Object.values(utmParams).some(v => v !== null),
+      timestamp: new Date().toISOString()
+    });
+    
+    // 8. Recommendations
+    console.log("\n💡 RECOMMENDATIONS:");
+    if (!Object.values(utmParams).some(v => v !== null)) {
+      console.log("❌ No UTM parameters found in URL");
+      console.log("🔧 Try this test URL:", `${window.location.origin}/?utm_source=instagram&utm_medium=bio_link&utm_campaign=social_launch&utm_content=profile_link`);
+    } else {
+      console.log("✅ UTM parameters found");
+      console.log("🔧 Check GA4 DebugView in 30 seconds for the test events");
+      console.log("🔧 Look for 'utm_diagnosis_test' event in DebugView");
+    }
+  };
+
+  return (
+    <div className="fixed bottom-4 left-4 z-50 space-y-2">
+      <button
+        onClick={runFullDiagnosis}
+        className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 text-sm font-bold"
+      >
+        🔬 Full UTM Diagnosis
+      </button>
+      
+      {diagnosticResults && (
+        <div className="bg-gray-800 text-white p-4 rounded-lg max-w-md text-sm">
+          <h3 className="font-bold mb-2">Diagnosis Results:</h3>
+          <p><strong>UTM Found:</strong> {diagnosticResults.hasUTMParams ? '✅ Yes' : '❌ No'}</p>
+          <p><strong>GA4 ID:</strong> {diagnosticResults.ga4Setup.trackingId ? '✅' : '❌'}</p>
+          <p><strong>gtag:</strong> {diagnosticResults.ga4Setup.gtagFunction === 'function' ? '✅' : '❌'}</p>
+          {diagnosticResults.hasUTMParams && (
+            <div className="mt-2">
+              <p><strong>Source:</strong> {diagnosticResults.utmParams.utm_source}</p>
+              <p><strong>Medium:</strong> {diagnosticResults.utmParams.utm_medium}</p>
+              <p><strong>Campaign:</strong> {diagnosticResults.utmParams.utm_campaign}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -229,12 +404,17 @@ export default function Home() {
         {/* Header */}
         <header className="flex justify-between items-center mb-16 relative">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-              </svg>
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/m_logo.png" 
+                alt="MarketEvo Logo" 
+                // className="w-8 h-8 rounded-lg"
+                className="w-10 h-10 rounded-lg"
+                
+
+              />
+              <span className="text-white font-bold text-xl">MarketEvo</span>
             </div>
-            <span className="text-white font-bold text-xl">MarketEvo</span>
           </div>
           
           {/* Desktop Navigation */}
@@ -921,6 +1101,8 @@ export default function Home() {
           </button>
         </div>
       )}
+
+      {process.env.NODE_ENV === 'development' && <UTMDiagnosticTool />}
 
       <style jsx>{`
         @keyframes gradient {
